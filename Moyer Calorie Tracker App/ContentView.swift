@@ -6,8 +6,7 @@ import HealthKit
 
 struct ContentView: View {
     @StateObject private var dayManager = DayManager()
-    @StateObject private var healthDataVM = HealthDataViewModel()
-
+    @StateObject private var healthKitManager = HealthKitManager()
     
     @State private var breakfastValue: Double = 0
     @State private var lunchValue: Double = 0
@@ -18,8 +17,13 @@ struct ContentView: View {
     @State private var totalFat: Double = 0
     @State private var calorieTotal: Double = 0
     @State private var exerciseTotal: Double = 0
+    @State private var burned: Double = 0
     
+    /// **🔹 Save Macros for the Current Day**
     func saveMacroData() {
+        guard dayManager.days.indices.contains(dayManager.currentIndex) else { return }
+        let currentDay = dayManager.days[dayManager.currentIndex]
+        
         dayManager.updateCurrentDay(
             totalCarb: totalCarb,
             totalProtein: totalProtein,
@@ -29,44 +33,67 @@ struct ContentView: View {
             dinnerValue: dinnerValue,
             snackValue: snackValue
         )
+        
+        // ✅ Correctly pass the `Day` object when saving
+        dayManager.saveDayData(dayToSave: currentDay)
+    }
+    
+    /// **🔹 Fetch Calories Burned from HealthKit for the Selected Day**
+    func fetchCaloriesForSelectedDay() {
+        let selectedDate = dayManager.days[safe: dayManager.currentIndex]?.date ?? Date()
+        
+        healthKitManager.fetchActiveEnergyBurned(startDate: selectedDate) { kcals in
+            DispatchQueue.main.async {
+                self.burned = kcals ?? 0
+                print("✅ Calories burned for \(selectedDate): \(self.burned) kcal")
+            }
+        }
+    }
+    
+    /// **🔹 Navigation Arrows to Switch Days**
+    private var navigationArrows: some View {
+        HStack {
+            Button(action: {
+                guard dayManager.days.indices.contains(dayManager.currentIndex) else { return }
+                let currentDay = dayManager.days[dayManager.currentIndex]
+                
+                dayManager.saveDayData(dayToSave: currentDay)  // ✅ Correctly passing the current day
+                withAnimation { dayManager.loadPreviousDay() }
+            }) {
+                Image(systemName: "arrow.left.circle.fill")
+                    .resizable()
+                    .frame(width: 40, height: 40)
+            }
+            
+            Spacer()
+            
+            Text("\(dayManager.formattedDate(for: dayManager.days.indices.contains(dayManager.currentIndex) ? dayManager.days[dayManager.currentIndex].date : Date()))")
+                .font(.title)
+                .bold()
+            
+            Spacer()
+            
+            Button(action: {
+                guard dayManager.days.indices.contains(dayManager.currentIndex) else { return }
+                let currentDay = dayManager.days[dayManager.currentIndex]
+                
+                dayManager.saveDayData(dayToSave: currentDay)  // ✅ Correctly passing the current day
+                withAnimation { dayManager.loadNextDay() }
+            }) {
+                Image(systemName: "arrow.right.circle.fill")
+                    .resizable()
+                    .frame(width: 40, height: 40)
+            }
+        }
+        .padding(.horizontal, 50)
     }
     
     var body: some View {
         ScrollView {
             VStack {
                 // **Navigation Arrows & Jump to Today**
-                HStack {
-                    Button(action: {
-                        dayManager.saveDayData()
-                        withAnimation { dayManager.loadPreviousDay() }
-                    }) {
-                        Image(systemName: "arrow.left.circle.fill")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                    }
-                    .disabled(dayManager.currentIndex == 0)
-                    
-                    Spacer()
-                    
-                    Text("\(dayManager.formattedDate(for: dayManager.days.indices.contains(dayManager.currentIndex) ? dayManager.days[dayManager.currentIndex].date : Date()))")
-                        .font(.title)
-                        .bold()
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        dayManager.saveDayData()
-                        withAnimation { dayManager.loadNextDay() }
-                    }) {
-                        Image(systemName: "arrow.right.circle.fill")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                    }
-                }
+                navigationArrows
                 .padding(.horizontal, 50)
-                
-                let totalConsumed = breakfastValue + lunchValue + dinnerValue + snackValue
-                let caloriesLeft = (1885 + exerciseTotal) - totalConsumed
                 
                 PartialDonutChart(
                     data: [
@@ -86,7 +113,7 @@ struct ContentView: View {
                 .rotationEffect(.degrees(234))
                 .overlay(
                     VStack {
-                        Text("\(Int(caloriesLeft))") // ✅ Display number
+                        Text("\(1885 - (Int(dayManager.days[safe: dayManager.currentIndex]?.calorieTotal ?? 0)) + Int(dayManager.days[safe: dayManager.currentIndex]?.exerciseTotal ?? 0))")
                             .font(.title)
                             .bold()
                             .foregroundColor(.primary)
@@ -102,57 +129,44 @@ struct ContentView: View {
                 ) .offset(x: 0, y: -215)
                 
                 // ✅ Updated: Calories Burned View Auto-Updates from HealthKit
-                CalorieBurnedView(dayManager: dayManager)
+                CalorieBurnedView(dayManager: dayManager, caloriesBurned: burned)
                     .offset(y: -150)
-
+                    .onAppear {
+                        fetchCaloriesForSelectedDay()
+                    }
+                
                 // ✅ Macro Entry View Auto-Saves
                 MacroEntryViews(
+                    dayManager: dayManager,
                     carbTotal: $totalCarb,
                     proteinTotal: $totalProtein,
                     fatTotal: $totalFat
                 )
                 .offset(y: -100)
-                .onChange(of: totalCarb) {
-                    saveMacroData()
-                }
-                .onChange(of: totalProtein) {
-                    saveMacroData()
-                }
-                .onChange(of: totalFat) {
-                    saveMacroData()
-                }
-
-
+                .onChange(of: totalCarb) { saveMacroData() }
+                .onChange(of: totalProtein) { saveMacroData() }
+                .onChange(of: totalFat) { saveMacroData() }
+                
                 // ✅ Meal Entry View Updates UI & Saves on Submit
                 MealEntriesView(
+                    dayManager: dayManager,
                     breakfastValue: $breakfastValue,
                     lunchValue: $lunchValue,
                     dinnerValue: $dinnerValue,
                     snackValue: $snackValue,
                     isToday: dayManager.isToday,
                     updateCurrentDay: {
-                        dayManager.updateCurrentDay(
-                            totalCarb: totalCarb,
-                            totalProtein: totalProtein,
-                            totalFat: totalFat,
-                            breakfastValue: breakfastValue,
-                            lunchValue: lunchValue,
-                            dinnerValue: dinnerValue,
-                            snackValue: snackValue
-                        )
-                        dayManager.saveDayData() // ✅ Saves immediately on update
+                        saveMacroData()
                     }
                 ).offset(y: -50)
             }
         }
         .onAppear {
-            // ✅ Load Firebase Data
-            dayManager.loadDayData()
-
-            // ✅ Listen for Day Updates
-            NotificationCenter.default.addObserver(forName: .didUpdateDay, object: nil, queue: .main) { notification in
-                if let userInfo = notification.userInfo, let day = userInfo["day"] as? Day {
-                    // ✅ Update UI with the new day's data
+            dayManager.loadDayData() // ✅ Ensure Firebase data loads on app launch
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .didUpdateDay)) { notification in
+            if let userInfo = notification.userInfo, let day = userInfo["day"] as? Day {
+                DispatchQueue.main.async {
                     self.breakfastValue = day.breakfastTotal
                     self.lunchValue = day.lunchTotal
                     self.dinnerValue = day.dinnerTotal
@@ -160,24 +174,14 @@ struct ContentView: View {
                     self.totalCarb = day.carbTotal
                     self.totalProtein = day.proteinTotal
                     self.totalFat = day.fatTotal
-                    self.calorieTotal = day.calorieTotal
                     self.exerciseTotal = day.exerciseTotal
-                }
-            }
-
-            // ✅ Listen for Calorie Updates from HealthKit
-            NotificationCenter.default.addObserver(forName: .didUpdateCalories, object: nil, queue: .main) { notification in
-                if let userInfo = notification.userInfo, let kcals = userInfo["kcals"] as? Double {
-                    DispatchQueue.main.async {
-                        if self.dayManager.isToday {
-                            self.exerciseTotal = kcals
-                        }
-                    }
                 }
             }
         }
         .onDisappear {
-            dayManager.saveDayData()
+            guard dayManager.days.indices.contains(dayManager.currentIndex) else { return }
+            let currentDay = dayManager.days[dayManager.currentIndex]
+            dayManager.saveDayData(dayToSave: currentDay)  // ✅ Save when view disappears
         }
     }
 }

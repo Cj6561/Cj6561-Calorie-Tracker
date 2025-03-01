@@ -4,9 +4,11 @@ import FirebaseFirestore
 class FirebaseHelper {
     static let shared = FirebaseHelper()
     private let db = Firestore.firestore()
-
+    
     func saveDayToFirestore(data: [String: Any], for date: Date) {
         let dateKey = formattedDateKey(from: date)
+
+        print("🔥 Saving to Firestore: \(data)")  // ✅ Debugging Log
 
         db.collection("days").document(dateKey).setData(data) { error in
             if let error = error {
@@ -38,5 +40,29 @@ class FirebaseHelper {
             completion(days)
         }
     }
-
+    func loadDayFromFirestore(for date: Date, completion: @escaping (Day?) -> Void) {
+        let dateKey = formattedDateKey(from: date)
+        
+        db.collection("days").document(dateKey).getDocument { document, error in
+            if let document = document, document.exists, let data = document.data() {
+                let day = Day(
+                    date: date,
+                    proteinTotal: data["proteinTotal"] as? Double ?? 0,
+                    carbTotal: data["carbTotal"] as? Double ?? 0,
+                    fatTotal: data["fatTotal"] as? Double ?? 0,
+                    calorieTotal: data["calorieTotal"] as? Double ?? 0,
+                    breakfastTotal: data["breakfastTotal"] as? Double ?? 0,
+                    lunchTotal: data["lunchTotal"] as? Double ?? 0,
+                    dinnerTotal: data["dinnerTotal"] as? Double ?? 0,
+                    snackTotal: data["snackTotal"] as? Double ?? 0,
+                    exerciseTotal: data["exerciseTotal"] as? Double ?? 0
+                )
+                print("✅ Firestore Data Loaded: \(day)")
+                completion(day)
+            } else {
+                print("⚠️ No Firestore data found for date: \(dateKey)")
+                completion(nil)
+            }
+        }
+    }
 }

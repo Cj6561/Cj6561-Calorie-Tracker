@@ -1,26 +1,25 @@
-import FirebaseCore
 import SwiftUI
+import FirebaseCore
+
+
 
 @main
 struct YourApp: App {
     init() {
-        FirebaseApp.configure() // ✅ Ensure Firebase initializes
-    }
-
+            FirebaseApp.configure()  // ✅ Ensure Firebase is initialized once!
+        }
+    var healthKitManager = HealthKitManager()
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // ✅ Delay Authorization
-                        HealthKitManager.shared.requestAuthorization { success, error in
-                            if success {
-                                print("✅ HealthKit authorization granted.")
-                            } else {
-                                print("❌ HealthKit authorization not granted.")
-                            }
-                        }
+            .onAppear {
+                healthKitManager.requestAuthorization { success, error in
+                    if !success {
+                        print("HealthKit authorization not granted.")
                     }
+                    print("HealthKit authorization granted.")
                 }
+            }
         }
     }
 }

@@ -27,7 +27,6 @@
 		D9696C8C2D72C84F005A0C00 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9696C892D72C84F005A0C00 /* GoogleService-Info.plist */; };
 		D9696C8E2D72D718005A0C00 /* CalorieBurnedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9696C8D2D72D718005A0C00 /* CalorieBurnedView.swift */; };
 		D976523A2D723D8700F39DAA /* macroFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97652392D723D8100F39DAA /* macroFields.swift */; };
-		D97652402D72974400F39DAA /* HealthDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D976523F2D72974400F39DAA /* HealthDataViewModel.swift */; };
 		D9B7B6B02D72BC190095997B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D9B7B6AF2D72BC190095997B /* FirebaseAuth */; };
 		D9B7B6B22D72BC190095997B /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = D9B7B6B12D72BC190095997B /* FirebaseCore */; };
 		D9B7B6B42D72BC190095997B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D9B7B6B32D72BC190095997B /* FirebaseFirestore */; };
@@ -76,7 +75,6 @@
 		D9696C8D2D72D718005A0C00 /* CalorieBurnedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieBurnedView.swift; sourceTree = "<group>"; };
 		D9696C8F2D72F678005A0C00 /* Moyer Calorie Tracker App.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Moyer Calorie Tracker App.xctestplan"; sourceTree = "<group>"; };
 		D97652392D723D8100F39DAA /* macroFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macroFields.swift; sourceTree = "<group>"; };
-		D976523F2D72974400F39DAA /* HealthDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataViewModel.swift; sourceTree = "<group>"; };
 		D9B7B6B52D72BC630095997B /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,7 +144,6 @@
 				D97652392D723D8100F39DAA /* macroFields.swift */,
 				D9391BCF2D71A4DD004ACC09 /* HealthKitManager.swift */,
 				D9696C8D2D72D718005A0C00 /* CalorieBurnedView.swift */,
-				D976523F2D72974400F39DAA /* HealthDataViewModel.swift */,
 				D90DDF042D7155400052642D /* Assets.xcassets */,
 				D9391BD22D71A8E8004ACC09 /* Moyer Calorie Tracker App.entitlements */,
 				D9391BD12D71A7A1004ACC09 /* Moyer-Calorie-Tracker-App-Info.plist */,
@@ -325,7 +322,6 @@
 				D9696C8E2D72D718005A0C00 /* CalorieBurnedView.swift in Sources */,
 				D9696C882D72C726005A0C00 /* Day.swift in Sources */,
 				D9696C822D72C402005A0C00 /* navigationView.swift in Sources */,
-				D97652402D72974400F39DAA /* HealthDataViewModel.swift in Sources */,
 				D9696C842D72C55E005A0C00 /* MealEntriesView.swift in Sources */,
 				D9391BD02D71A4DD004ACC09 /* HealthKitManager.swift in Sources */,
 				D90DDF012D71553F0052642D /* Moyer_Calorie_Tracker_App.swift in Sources */,

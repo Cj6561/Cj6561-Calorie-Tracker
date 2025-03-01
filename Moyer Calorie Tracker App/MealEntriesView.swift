@@ -6,6 +6,7 @@ extension View {
 }
 
 struct MealEntriesView: View {
+    @ObservedObject var dayManager = DayManager()
     @Binding var breakfastValue: Double
     @Binding var lunchValue: Double
     @Binding var dinnerValue: Double
@@ -21,7 +22,7 @@ struct MealEntriesView: View {
     var body: some View {
         VStack(spacing: 15) {
             // **Breakfast Entry**
-            MealEntryField(title: "Breakfast", value: $breakfastInput, isEditable: isToday) {
+            MealEntryField(dayManager: dayManager,title: "Breakfast", value: $breakfastInput, isEditable: isToday) {
                 if let addedValue = Double(breakfastInput), isToday {
                     breakfastValue += addedValue
                     updateCurrentDay()
@@ -31,7 +32,7 @@ struct MealEntriesView: View {
             }
 
             // **Lunch Entry**
-            MealEntryField(title: "Lunch", value: $lunchInput, isEditable: isToday) {
+            MealEntryField(dayManager: dayManager, title: "Lunch", value: $lunchInput, isEditable: isToday) {
                 if let addedValue = Double(lunchInput), isToday {
                     lunchValue += addedValue
                     updateCurrentDay()
@@ -41,7 +42,7 @@ struct MealEntriesView: View {
             }
 
             // **Dinner Entry**
-            MealEntryField(title: "Dinner", value: $dinnerInput, isEditable: isToday) {
+            MealEntryField(dayManager: dayManager,title: "Dinner", value: $dinnerInput, isEditable: isToday) {
                 if let addedValue = Double(dinnerInput), isToday {
                     dinnerValue += addedValue
                     updateCurrentDay()
@@ -51,7 +52,7 @@ struct MealEntriesView: View {
             }
 
             // **Snack Entry**
-            MealEntryField(title: "Snacks", value: $snackInput, isEditable: isToday) {
+            MealEntryField(dayManager: dayManager,title: "Snacks", value: $snackInput, isEditable: isToday) {
                 if let addedValue = Double(snackInput), isToday {
                     snackValue += addedValue
                     updateCurrentDay()
@@ -63,6 +64,7 @@ struct MealEntriesView: View {
     }
 }
 struct MealEntryField: View {
+    @ObservedObject var dayManager = DayManager()
     let title: String
     @Binding var value: String
     var isEditable: Bool
@@ -80,6 +82,7 @@ struct MealEntryField: View {
             
             Button("Submit") {
                 onSubmit()
+                dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
             }
             .disabled(!isEditable || value.isEmpty) // ✅ Prevent submits on past days
         }

@@ -17,6 +17,6 @@ struct Day: Codable {
     var breakfastTotal: Double
     var lunchTotal: Double
     var dinnerTotal: Double
-    var snackTotal: Double
+    var snackTotal: Double;
     var exerciseTotal: Double
 }
