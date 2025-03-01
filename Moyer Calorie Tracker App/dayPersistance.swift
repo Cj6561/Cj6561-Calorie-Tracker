@@ -7,7 +7,7 @@
 import Foundation
 
 struct Day: Codable {
-    let date: Date
+    var date: Date  // ✅ Change `let` to `var`
     var proteinTotal: Double
     var carbTotal: Double
     var fatTotal: Double
@@ -18,6 +18,7 @@ struct Day: Codable {
     var snackTotal: Double
     var exerciseTotal: Double
 }
+
 
 class FileHelper {
     static let shared = FileHelper() // Singleton instance

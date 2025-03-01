@@ -7,6 +7,24 @@
 import SwiftUI
 
 
+
+struct MacroEntryViews: View{
+    @State private var currentEntry: String = ""
+    @Binding var carbTotal: Double
+    @Binding var proteinTotal: Double
+    @Binding var fatTotal: Double
+    @FocusState private var isTextFieldFocused: Bool
+    
+    var body: some View{
+        HStack{
+            CarbEntryView(carbTotal: $carbTotal)
+            ProteinEntryView(proteinTotal: $proteinTotal)
+            FatEntryView(fatTotal: $fatTotal)
+        }
+    }
+}
+
+
 struct ProteinEntryView: View {
     @State private var currentEntry: String = ""
     @Binding var proteinTotal: Double

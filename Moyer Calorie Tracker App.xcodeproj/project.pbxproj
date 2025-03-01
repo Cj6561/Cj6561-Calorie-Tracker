@@ -18,10 +18,19 @@
 		D9391BD02D71A4DD004ACC09 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9391BCF2D71A4DD004ACC09 /* HealthKitManager.swift */; };
 		D9391BD42D723031004ACC09 /* Macros.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9391BD32D723028004ACC09 /* Macros.swift */; };
 		D9391BD62D7237A5004ACC09 /* DonutSlice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9391BD52D7237A5004ACC09 /* DonutSlice.swift */; };
+		D9696C822D72C402005A0C00 /* navigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9696C812D72C402005A0C00 /* navigationView.swift */; };
+		D9696C842D72C55E005A0C00 /* MealEntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9696C832D72C55E005A0C00 /* MealEntriesView.swift */; };
+		D9696C862D72C5C5005A0C00 /* DayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9696C852D72C5C5005A0C00 /* DayManager.swift */; };
+		D9696C882D72C726005A0C00 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9696C872D72C726005A0C00 /* Day.swift */; };
+		D9696C8A2D72C84F005A0C00 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9696C892D72C84F005A0C00 /* GoogleService-Info.plist */; };
+		D9696C8B2D72C84F005A0C00 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9696C892D72C84F005A0C00 /* GoogleService-Info.plist */; };
+		D9696C8C2D72C84F005A0C00 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9696C892D72C84F005A0C00 /* GoogleService-Info.plist */; };
 		D976523A2D723D8700F39DAA /* macroFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97652392D723D8100F39DAA /* macroFields.swift */; };
-		D976523C2D725E6000F39DAA /* dayPersistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D976523B2D725E5C00F39DAA /* dayPersistance.swift */; };
-		D976523E2D7262D300F39DAA /* days.json.swift in Sources */ = {isa = PBXBuildFile; fileRef = D976523D2D7262CE00F39DAA /* days.json.swift */; };
 		D97652402D72974400F39DAA /* HealthDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D976523F2D72974400F39DAA /* HealthDataViewModel.swift */; };
+		D9B7B6B02D72BC190095997B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D9B7B6AF2D72BC190095997B /* FirebaseAuth */; };
+		D9B7B6B22D72BC190095997B /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = D9B7B6B12D72BC190095997B /* FirebaseCore */; };
+		D9B7B6B42D72BC190095997B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D9B7B6B32D72BC190095997B /* FirebaseFirestore */; };
+		D9B7B6B62D72BC630095997B /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B7B6B52D72BC630095997B /* FirebaseHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,10 +67,14 @@
 		D9391BD22D71A8E8004ACC09 /* Moyer Calorie Tracker App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Moyer Calorie Tracker App.entitlements"; sourceTree = "<group>"; };
 		D9391BD32D723028004ACC09 /* Macros.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Macros.swift; sourceTree = "<group>"; };
 		D9391BD52D7237A5004ACC09 /* DonutSlice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonutSlice.swift; sourceTree = "<group>"; };
+		D9696C812D72C402005A0C00 /* navigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = navigationView.swift; sourceTree = "<group>"; };
+		D9696C832D72C55E005A0C00 /* MealEntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealEntriesView.swift; sourceTree = "<group>"; };
+		D9696C852D72C5C5005A0C00 /* DayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayManager.swift; sourceTree = "<group>"; };
+		D9696C872D72C726005A0C00 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		D9696C892D72C84F005A0C00 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D97652392D723D8100F39DAA /* macroFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macroFields.swift; sourceTree = "<group>"; };
-		D976523B2D725E5C00F39DAA /* dayPersistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dayPersistance.swift; sourceTree = "<group>"; };
-		D976523D2D7262CE00F39DAA /* days.json.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = days.json.swift; sourceTree = "<group>"; };
 		D976523F2D72974400F39DAA /* HealthDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataViewModel.swift; sourceTree = "<group>"; };
+		D9B7B6B52D72BC630095997B /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +82,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9B7B6B22D72BC190095997B /* FirebaseCore in Frameworks */,
+				D9B7B6B02D72BC190095997B /* FirebaseAuth in Frameworks */,
+				D9B7B6B42D72BC190095997B /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,14 +128,18 @@
 		D90DDEFF2D71553F0052642D /* Moyer Calorie Tracker App */ = {
 			isa = PBXGroup;
 			children = (
+				D9696C892D72C84F005A0C00 /* GoogleService-Info.plist */,
 				D90DDF002D71553F0052642D /* Moyer_Calorie_Tracker_App.swift */,
 				D90DDF022D71553F0052642D /* ContentView.swift */,
-				D976523D2D7262CE00F39DAA /* days.json.swift */,
+				D9696C872D72C726005A0C00 /* Day.swift */,
+				D9696C852D72C5C5005A0C00 /* DayManager.swift */,
+				D9696C832D72C55E005A0C00 /* MealEntriesView.swift */,
+				D9696C812D72C402005A0C00 /* navigationView.swift */,
+				D9B7B6B52D72BC630095997B /* FirebaseHelper.swift */,
 				D9391BD52D7237A5004ACC09 /* DonutSlice.swift */,
 				D9391BD32D723028004ACC09 /* Macros.swift */,
 				D9391BCD2D719605004ACC09 /* mealFields.swift */,
 				D97652392D723D8100F39DAA /* macroFields.swift */,
-				D976523B2D725E5C00F39DAA /* dayPersistance.swift */,
 				D9391BCF2D71A4DD004ACC09 /* HealthKitManager.swift */,
 				D976523F2D72974400F39DAA /* HealthDataViewModel.swift */,
 				D90DDF042D7155400052642D /* Assets.xcassets */,
@@ -243,6 +263,9 @@
 				Base,
 			);
 			mainGroup = D90DDEF42D71553F0052642D;
+			packageReferences = (
+				D9B7B6AE2D72BC190095997B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = D90DDEFE2D71553F0052642D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -261,6 +284,7 @@
 			files = (
 				D90DDF082D7155400052642D /* Preview Assets.xcassets in Resources */,
 				D90DDF052D7155400052642D /* Assets.xcassets in Resources */,
+				D9696C8A2D72C84F005A0C00 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +292,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9696C8C2D72C84F005A0C00 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +300,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9696C8B2D72C84F005A0C00 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,13 +311,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9696C862D72C5C5005A0C00 /* DayManager.swift in Sources */,
 				D90DDF032D71553F0052642D /* ContentView.swift in Sources */,
 				D9391BD42D723031004ACC09 /* Macros.swift in Sources */,
-				D976523C2D725E6000F39DAA /* dayPersistance.swift in Sources */,
 				D9391BCE2D719605004ACC09 /* mealFields.swift in Sources */,
+				D9B7B6B62D72BC630095997B /* FirebaseHelper.swift in Sources */,
 				D9391BD62D7237A5004ACC09 /* DonutSlice.swift in Sources */,
-				D976523E2D7262D300F39DAA /* days.json.swift in Sources */,
+				D9696C882D72C726005A0C00 /* Day.swift in Sources */,
+				D9696C822D72C402005A0C00 /* navigationView.swift in Sources */,
 				D97652402D72974400F39DAA /* HealthDataViewModel.swift in Sources */,
+				D9696C842D72C55E005A0C00 /* MealEntriesView.swift in Sources */,
 				D9391BD02D71A4DD004ACC09 /* HealthKitManager.swift in Sources */,
 				D90DDF012D71553F0052642D /* Moyer_Calorie_Tracker_App.swift in Sources */,
 				D976523A2D723D8700F39DAA /* macroFields.swift in Sources */,
@@ -664,6 +693,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D9B7B6AE2D72BC190095997B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D9B7B6AF2D72BC190095997B /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D9B7B6AE2D72BC190095997B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		D9B7B6B12D72BC190095997B /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D9B7B6AE2D72BC190095997B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		D9B7B6B32D72BC190095997B /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D9B7B6AE2D72BC190095997B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D90DDEF52D71553F0052642D /* Project object */;
 }

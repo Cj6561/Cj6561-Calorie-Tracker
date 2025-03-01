@@ -1,16 +1,13 @@
-//
-//  Moyer_Calorie_Tracker_AppApp.swift
-//  Moyer Calorie Tracker App
-//
-//  Created by Christian Moyer on 2/27/25.
-//
-
 import SwiftUI
-import UIKit
+import FirebaseCore
+
 
 
 @main
-struct Moyer_Calorie_Tracker_App: App {
+struct YourApp: App {
+    init() {
+            FirebaseApp.configure()  // ✅ Ensure Firebase is initialized once!
+        }
     var body: some Scene {
         WindowGroup {
             ContentView()
