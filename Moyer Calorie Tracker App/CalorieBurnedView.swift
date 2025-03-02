@@ -1,11 +1,13 @@
 import SwiftUI
 import HealthKit
+import Combine
+
 
 struct CalorieBurnedView: View {
     @ObservedObject var healthKitManager = HealthKitManager()
     @ObservedObject var dayManager = DayManager()  // ✅ Reference DayManager to get selected day
     @State var caloriesBurned: Double  // ✅ Stores current burned calories
-    @State var timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect() // ✅ Auto-refresh every 45 second
+    let timer: Publishers.Autoconnect<Timer.TimerPublisher>
     private func fetchCaloriesForSelectedDay() {
         let selectedDate = dayManager.days[safe: dayManager.currentIndex]?.date ?? Date()
 
@@ -17,7 +19,7 @@ struct CalorieBurnedView: View {
                 self.dayManager.days[self.dayManager.currentIndex].exerciseTotal = self.caloriesBurned
                 self.dayManager.saveDayData(dayToSave: self.dayManager.days[self.dayManager.currentIndex])
                 
-                print("✅ Calories burned updated: \(self.caloriesBurned) kcal")
+                print("✅ Calories burned updated: \(self.caloriesBurned)")
             }
         }
     }
@@ -25,7 +27,7 @@ struct CalorieBurnedView: View {
 
     var body: some View {
         VStack {
-            Text("\(Int(caloriesBurned)) kcal")
+            Text("\(Int(caloriesBurned))")
                 .font(.title)
                 .bold()
                 .foregroundColor(.red)

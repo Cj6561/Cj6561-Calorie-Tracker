@@ -14,7 +14,6 @@
 		D90DDF122D7155400052642D /* Moyer_Calorie_Tracker_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90DDF112D7155400052642D /* Moyer_Calorie_Tracker_AppTests.swift */; };
 		D90DDF1C2D7155400052642D /* Moyer_Calorie_Tracker_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90DDF1B2D7155400052642D /* Moyer_Calorie_Tracker_AppUITests.swift */; };
 		D90DDF1E2D7155400052642D /* Moyer_Calorie_Tracker_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90DDF1D2D7155400052642D /* Moyer_Calorie_Tracker_AppUITestsLaunchTests.swift */; };
-		D9391BCE2D719605004ACC09 /* mealFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9391BCD2D719605004ACC09 /* mealFields.swift */; };
 		D9391BD02D71A4DD004ACC09 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9391BCF2D71A4DD004ACC09 /* HealthKitManager.swift */; };
 		D9391BD42D723031004ACC09 /* Macros.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9391BD32D723028004ACC09 /* Macros.swift */; };
 		D9391BD62D7237A5004ACC09 /* DonutSlice.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9391BD52D7237A5004ACC09 /* DonutSlice.swift */; };
@@ -61,7 +60,6 @@
 		D90DDF172D7155400052642D /* Moyer Calorie Tracker AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Moyer Calorie Tracker AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D90DDF1B2D7155400052642D /* Moyer_Calorie_Tracker_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Moyer_Calorie_Tracker_AppUITests.swift; sourceTree = "<group>"; };
 		D90DDF1D2D7155400052642D /* Moyer_Calorie_Tracker_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Moyer_Calorie_Tracker_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		D9391BCD2D719605004ACC09 /* mealFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealFields.swift; sourceTree = "<group>"; };
 		D9391BCF2D71A4DD004ACC09 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		D9391BD12D71A7A1004ACC09 /* Moyer-Calorie-Tracker-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Moyer-Calorie-Tracker-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		D9391BD22D71A8E8004ACC09 /* Moyer Calorie Tracker App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Moyer Calorie Tracker App.entitlements"; sourceTree = "<group>"; };
@@ -140,7 +138,6 @@
 				D9B7B6B52D72BC630095997B /* FirebaseHelper.swift */,
 				D9391BD52D7237A5004ACC09 /* DonutSlice.swift */,
 				D9391BD32D723028004ACC09 /* Macros.swift */,
-				D9391BCD2D719605004ACC09 /* mealFields.swift */,
 				D97652392D723D8100F39DAA /* macroFields.swift */,
 				D9391BCF2D71A4DD004ACC09 /* HealthKitManager.swift */,
 				D9696C8D2D72D718005A0C00 /* CalorieBurnedView.swift */,
@@ -316,7 +313,6 @@
 				D9696C862D72C5C5005A0C00 /* DayManager.swift in Sources */,
 				D90DDF032D71553F0052642D /* ContentView.swift in Sources */,
 				D9391BD42D723031004ACC09 /* Macros.swift in Sources */,
-				D9391BCE2D719605004ACC09 /* mealFields.swift in Sources */,
 				D9B7B6B62D72BC630095997B /* FirebaseHelper.swift in Sources */,
 				D9391BD62D7237A5004ACC09 /* DonutSlice.swift in Sources */,
 				D9696C8E2D72D718005A0C00 /* CalorieBurnedView.swift in Sources */,

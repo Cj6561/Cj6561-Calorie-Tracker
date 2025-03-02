@@ -1,9 +1,6 @@
 import SwiftUI
-extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
+
+
 
 struct MealEntriesView: View {
     @ObservedObject var dayManager = DayManager()
@@ -27,7 +24,7 @@ struct MealEntriesView: View {
                     breakfastValue += addedValue
                     updateCurrentDay()
                     breakfastInput = "" // ✅ Reset input field
-                    hideKeyboard() // ✅ Dismiss keyboard
+                     
                 }
             }
 
@@ -37,7 +34,6 @@ struct MealEntriesView: View {
                     lunchValue += addedValue
                     updateCurrentDay()
                     lunchInput = "" // ✅ Reset input field
-                    hideKeyboard() // ✅ Dismiss keyboard
                 }
             }
 
@@ -47,7 +43,6 @@ struct MealEntriesView: View {
                     dinnerValue += addedValue
                     updateCurrentDay()
                     dinnerInput = "" // ✅ Reset input field
-                    hideKeyboard() // ✅ Dismiss keyboard
                 }
             }
 
@@ -57,7 +52,6 @@ struct MealEntriesView: View {
                     snackValue += addedValue
                     updateCurrentDay()
                     snackInput = "" // ✅ Reset input field
-                    hideKeyboard() // ✅ Dismiss keyboard
                 }
             }
         }
@@ -72,19 +66,31 @@ struct MealEntryField: View {
     
     var body: some View {
         HStack {
-            Text(title)
-                .font(.headline)
-
+            HStack {
+                Spacer()
+                Text(title)
+                    .font(.system(size: 17))
+                Spacer()
+            }
+            Spacer()
+            
             TextField("Enter \(title) Calories", text: $value)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.decimalPad)
                 .disabled(!isEditable) // ✅ Disable input if not today
+                .frame(width: 200)
+                
+            Spacer()
             
-            Button("Submit") {
-                onSubmit()
-                dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
+            HStack {
+                Spacer()
+                Button("Submit") {
+                    onSubmit()
+                    dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
+                }
+                .disabled(!isEditable || value.isEmpty) // ✅ Prevent submits on past days
+                Spacer()
             }
-            .disabled(!isEditable || value.isEmpty) // ✅ Prevent submits on past days
         }
     }
 }

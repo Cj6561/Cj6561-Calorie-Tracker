@@ -53,7 +53,7 @@ struct PartialDonutChart: View {
                     innerRatio: innerRatio,
                     clockwise:  clockwise
                 )
-                .fill(Color.gray.opacity(0.2))
+                .fill(Color.gray.opacity(0.5))
                 
 
                 ForEach(slices.indices, id: \.self) { i in

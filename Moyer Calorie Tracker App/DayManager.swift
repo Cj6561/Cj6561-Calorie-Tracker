@@ -16,6 +16,8 @@ class DayManager: ObservableObject {
     @Published var days: [Day] = []
     @Published var currentIndex: Int = 0
     @Published var isToday: Bool = true
+    @Published var burnedCalories: Double = 0
+
 
     private let healthKitManager = HealthKitManager()
 
@@ -55,13 +57,16 @@ class DayManager: ObservableObject {
             if let kcals = kcals {
                 DispatchQueue.main.async {
                     if self.days.indices.contains(self.currentIndex) {
-                        self.saveDayData(dayToSave: self.days[self.currentIndex])  // ✅ Fix by adding `self.`
+                        self.days[self.currentIndex].exerciseTotal = kcals
+                        self.burnedCalories = kcals // ✅ Updates `burnedCalories`, triggering UI refresh
+                        self.saveDayData(dayToSave: self.days[self.currentIndex])
                         print("✅ Updated HealthKit data: \(kcals) kcal")
                     }
                 }
             }
         }
     }
+
 
     /// **🔹 Create a New Day if Missing**
     func createNewDay(for date: Date) {
@@ -114,6 +119,17 @@ class DayManager: ObservableObject {
     func loadNextDay() {
         let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: days[currentIndex].date) ?? Date()
         navigateToDay(nextDate)
+    }
+    /// **🔹 Load Today's Data Regardless of Current View**
+    func loadToday() {
+        let today = startOfDay(for: Date()) // Get real-world today's date
+
+        if let todayIndex = days.firstIndex(where: { startOfDay(for: $0.date) == today }) {
+            currentIndex = todayIndex
+            updateUI(with: days[currentIndex])
+        } else {
+            createNewDay(for: today) // ✅ If today doesn't exist, create it
+        }
     }
 
     /// **🔹 Ensure a Day Exists for the Given Date**

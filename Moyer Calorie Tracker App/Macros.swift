@@ -56,7 +56,11 @@ struct MacroView: View {
                 )
                 .frame(width: 30, height: 30)
                 .rotationEffect(.degrees(234))
-                Text("P").offset(y: -30)
+                if(proteinValue >= 200){
+                    Text("✓").offset(y: -30)
+                } else{
+                    Text("P").offset(y: -30)
+                }
             }.offset(y: -15)
             VStack{
                 PartialDonutChart(

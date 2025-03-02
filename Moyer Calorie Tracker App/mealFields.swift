@@ -20,7 +20,7 @@ struct BreakfastEntryView: View {
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($isTextFieldFocused)
-                .frame(width: 370, height: 25)
+                .frame(width: 20, height: 25)
 
             Button("Add to Breakfast") {
                 let value = Double(currentEntry) ?? 0
@@ -58,7 +58,7 @@ struct LunchEntryView: View {
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($isTextFieldFocused)
-                .frame(width: 370, height: 25)
+                .frame(width: 330, height: 25)
 
             Button("Add to Lunch") {
                 let value = Double(currentEntry) ?? 0
@@ -96,7 +96,7 @@ struct DinnerEntryView: View {
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($isTextFieldFocused)
-                .frame(width: 370, height: 25)
+                .frame(width: 330, height: 25)
 
             Button("Add to Dinner") {
                 let value = Double(currentEntry) ?? 0
@@ -134,7 +134,7 @@ struct SnackEntryView: View {
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($isTextFieldFocused)
-                .frame(width: 370, height: 25)
+                .frame(width: 330, height: 25)
                 
             Button("Add to Snack") {
                 let value = Double(currentEntry) ?? 0

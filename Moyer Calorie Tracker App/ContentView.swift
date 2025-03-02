@@ -3,10 +3,20 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 import HealthKit
+import Combine
+
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
 
 struct ContentView: View {
     @StateObject private var dayManager = DayManager()
     @StateObject private var healthKitManager = HealthKitManager()
+    @State private var timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()  // ✅ Shared timer
+
+
     
     @State private var breakfastValue: Double = 0
     @State private var lunchValue: Double = 0
@@ -15,9 +25,10 @@ struct ContentView: View {
     @State private var totalCarb: Double = 0
     @State private var totalProtein: Double = 0
     @State private var totalFat: Double = 0
-    @State private var calorieTotal: Double = 0
-    @State private var exerciseTotal: Double = 0
-    @State private var burned: Double = 0
+    @State private var calorieTotal: Double = 1885
+    @State private var exerciseTotal: Double = 0  // ✅ Stores burned calories from HealthKit
+    @State private var baseDailyGoal: Double = 1885  // ✅ Base Daily Goal
+
     
     /// **🔹 Save Macros for the Current Day**
     func saveMacroData() {
@@ -44,12 +55,28 @@ struct ContentView: View {
         
         healthKitManager.fetchActiveEnergyBurned(startDate: selectedDate) { kcals in
             DispatchQueue.main.async {
-                self.burned = kcals ?? 0
-                print("✅ Calories burned for \(selectedDate): \(self.burned) kcal")
+                self.exerciseTotal = kcals ?? 0
+                print("✅ Calories burned for \(selectedDate): \(self.exerciseTotal) kcal")
             }
         }
     }
-    
+    /// **🔹 Computes Calories Left**
+    var caloriesLeft: Int {
+        let consumed = Int(dayManager.days[safe: dayManager.currentIndex]?.calorieTotal ?? 0)
+        let exerciseTotal = Int(dayManager.days[safe: dayManager.currentIndex]?.exerciseTotal ?? 0)
+        return (1885 - consumed) + exerciseTotal
+    }
+
+    private var homeButton: some View {
+        Button(action: {
+            withAnimation { dayManager.loadToday() }
+        })
+        {Image(systemName: "house")
+                .resizable()
+                .frame(width: 40, height: 40)
+        }
+            
+    }
     /// **🔹 Navigation Arrows to Switch Days**
     private var navigationArrows: some View {
         HStack {
@@ -92,9 +119,14 @@ struct ContentView: View {
         ScrollView {
             VStack {
                 // **Navigation Arrows & Jump to Today**
-                navigationArrows
-                .padding(.horizontal, 50)
-                
+                HStack{
+                    homeButton.frame(width: 40, height: 40)
+                        .offset(x:25)
+        
+                    navigationArrows
+                    Spacer(minLength: 40)
+                        
+                }
                 PartialDonutChart(
                     data: [
                         (label: "Breakfast", value: breakfastValue),
@@ -107,13 +139,16 @@ struct ContentView: View {
                     startAngle: .degrees(270),
                     innerRatio: 0.6,
                     clockwise: false,
-                    dailyGoal: 1885
-                )
+                    dailyGoal: baseDailyGoal + exerciseTotal
+                ).onReceive(timer) { _ in
+                    fetchCaloriesForSelectedDay()  // ✅ Auto-refresh burned calories
+                }
+
                 .frame(width: 300, height: 300)
                 .rotationEffect(.degrees(234))
                 .overlay(
                     VStack {
-                        Text("\(1885 - (Int(dayManager.days[safe: dayManager.currentIndex]?.calorieTotal ?? 0)) + Int(dayManager.days[safe: dayManager.currentIndex]?.exerciseTotal ?? 0))")
+                        Text("\(Int(caloriesLeft))")
                             .font(.title)
                             .bold()
                             .foregroundColor(.primary)
@@ -129,11 +164,15 @@ struct ContentView: View {
                 ) .offset(x: 0, y: -215)
                 
                 // ✅ Updated: Calories Burned View Auto-Updates from HealthKit
-                CalorieBurnedView(dayManager: dayManager, caloriesBurned: burned)
+                CalorieBurnedView(dayManager: dayManager, caloriesBurned: exerciseTotal, timer: timer)
                     .offset(y: -150)
                     .onAppear {
                         fetchCaloriesForSelectedDay()
                     }
+                    .onReceive(timer) { _ in
+                        fetchCaloriesForSelectedDay()  // ✅ Auto-refresh burned calories every 45s
+                    }
+
                 
                 // ✅ Macro Entry View Auto-Saves
                 MacroEntryViews(
@@ -146,6 +185,16 @@ struct ContentView: View {
                 .onChange(of: totalCarb) { saveMacroData() }
                 .onChange(of: totalProtein) { saveMacroData() }
                 .onChange(of: totalFat) { saveMacroData() }
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        HStack {
+                            Spacer()
+                            Button("Done") {
+                                hideKeyboard() // Function to dismiss the keyboard
+                            }
+                        }
+                    }
+                }
                 
                 // ✅ Meal Entry View Updates UI & Saves on Submit
                 MealEntriesView(
@@ -177,7 +226,10 @@ struct ContentView: View {
                     self.exerciseTotal = day.exerciseTotal
                 }
             }
+        }.onReceive(dayManager.$burnedCalories) { newBurned in
+            self.exerciseTotal = newBurned // ✅ Keeps UI in sync
         }
+
         .onDisappear {
             guard dayManager.days.indices.contains(dayManager.currentIndex) else { return }
             let currentDay = dayManager.days[dayManager.currentIndex]

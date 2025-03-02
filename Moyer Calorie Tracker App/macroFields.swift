@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+
 struct MacroEntryViews: View {
     @ObservedObject var dayManager: DayManager  // ✅ Pass DayManager reference
     @State private var currentEntry: String = ""
@@ -31,12 +32,14 @@ struct ProteinEntryView: View {
     
     var body: some View {
         VStack(spacing: 10) {
+            Text("\(String(format: "%.0f", proteinTotal)) / 200g")
             TextField("Enter Protein", text: $currentEntry)
                 .font(.system(size: 15))
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($isTextFieldFocused)
                 .frame(width: 110, height: 22)
+
 
             Button("Add to Protein") {
                 let value = Double(currentEntry) ?? 0
@@ -54,7 +57,7 @@ struct ProteinEntryView: View {
             }
             .font(.system(size: 12))
             .frame(width: 100, height: 20)
-            .border(Color.blue, width: 3)
+            .border(Color.green, width: 3)
         }
     }
 }
@@ -67,6 +70,7 @@ struct CarbEntryView: View {
     
     var body: some View {
         VStack(spacing: 10) {
+            Text("\(String(format: "%.0f", carbTotal)) / 110")
             TextField("Enter Carbs", text: $currentEntry)
                 .font(.system(size: 15))
                 .keyboardType(.decimalPad)
@@ -103,6 +107,7 @@ struct FatEntryView: View {
     
     var body: some View {
         VStack(spacing: 10) {
+            Text("\(String(format: "%.0f", fatTotal)) / 70")
             TextField("Enter Fat", text: $currentEntry)
                 .font(.system(size: 15))
                 .keyboardType(.decimalPad)
@@ -126,7 +131,7 @@ struct FatEntryView: View {
             }
             .font(.system(size: 12))
             .frame(width: 100, height: 20)
-            .border(Color.blue, width: 3)
+            .border(Color.red, width: 3)
         }
     }
 }
