@@ -11,6 +11,9 @@ struct MacroView: View {
     @Binding var carbsValue: Double
     @Binding var proteinValue: Double
     @Binding var fatsValue: Double
+    @Binding var baseDailyCarbs: Double
+    @Binding var baseDailyProteins: Double
+    @Binding var baseDailyFats: Double
 
     var carbsData: [(label: String, value: Double)] {
         [
@@ -38,7 +41,10 @@ struct MacroView: View {
                     startAngle: .degrees(270),
                     innerRatio: 0.6,
                     clockwise: false,
-                    dailyGoal: 200
+                    dailyGoal: $baseDailyCarbs,
+                    exerciseTotal: 0.0,
+                    exerciseBool: true
+                    
                 )
                 .frame(width: 30, height: 30)
                 .rotationEffect(.degrees(234))
@@ -52,7 +58,9 @@ struct MacroView: View {
                     startAngle: .degrees(270),
                     innerRatio: 0.6,
                     clockwise: false,
-                    dailyGoal: 200
+                    dailyGoal: $baseDailyProteins,
+                    exerciseTotal: 0.0,
+                    exerciseBool: true
                 )
                 .frame(width: 30, height: 30)
                 .rotationEffect(.degrees(234))
@@ -70,7 +78,9 @@ struct MacroView: View {
                     startAngle: .degrees(270),
                     innerRatio: 0.6,
                     clockwise: false,
-                    dailyGoal: 70
+                    dailyGoal: $baseDailyFats,
+                    exerciseTotal: 0.0,
+                    exerciseBool: true
                 )
                 .frame(width: 30, height: 30)
                 .rotationEffect(.degrees(234))

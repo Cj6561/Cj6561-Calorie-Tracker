@@ -13,13 +13,16 @@ struct MacroEntryViews: View {
     @Binding var carbTotal: Double
     @Binding var proteinTotal: Double
     @Binding var fatTotal: Double
+    @Binding var carbGoal: Double
+    @Binding var proteinGoal: Double
+    @Binding var fatGoal: Double
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
         HStack {
-            CarbEntryView(dayManager: dayManager, carbTotal: $carbTotal)
-            ProteinEntryView(dayManager: dayManager, proteinTotal: $proteinTotal)
-            FatEntryView(dayManager: dayManager, fatTotal: $fatTotal)
+            CarbEntryView(dayManager: dayManager, carbTotal: $carbTotal, carbGoal: $carbGoal)
+            ProteinEntryView(dayManager: dayManager, proteinTotal: $proteinTotal, proteinGoal: $proteinGoal)
+            FatEntryView(dayManager: dayManager, fatTotal: $fatTotal, fatGoal: $fatGoal)
         }
     }
 }
@@ -28,11 +31,12 @@ struct ProteinEntryView: View {
     @ObservedObject var dayManager: DayManager
     @State private var currentEntry: String = ""
     @Binding var proteinTotal: Double
+    @Binding var proteinGoal: Double
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
         VStack(spacing: 10) {
-            Text("\(String(format: "%.0f", proteinTotal)) / 200g")
+            Text("\(String(format: "%3.0f", proteinTotal)) / \(String(format: "%.0f", proteinGoal))")
             TextField("Enter Protein", text: $currentEntry)
                 .font(.system(size: 15))
                 .keyboardType(.decimalPad)
@@ -57,6 +61,7 @@ struct ProteinEntryView: View {
             }
             .font(.system(size: 12))
             .frame(width: 100, height: 20)
+            .foregroundStyle(Color.green)
             .border(Color.green, width: 3)
         }
     }
@@ -66,11 +71,12 @@ struct CarbEntryView: View {
     @ObservedObject var dayManager: DayManager
     @State private var currentEntry: String = ""
     @Binding var carbTotal: Double
+    @Binding var carbGoal: Double
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
         VStack(spacing: 10) {
-            Text("\(String(format: "%.0f", carbTotal)) / 110")
+            Text("\(String(format: "%3.0f", carbTotal)) / \(String(format: "%.0f", carbGoal))")
             TextField("Enter Carbs", text: $currentEntry)
                 .font(.system(size: 15))
                 .keyboardType(.decimalPad)
@@ -94,6 +100,7 @@ struct CarbEntryView: View {
             }
             .font(.system(size: 12))
             .frame(width: 100, height: 20)
+            .foregroundStyle(Color.blue)
             .border(Color.blue, width: 3)
         }
     }
@@ -103,11 +110,12 @@ struct FatEntryView: View {
     @ObservedObject var dayManager: DayManager
     @State private var currentEntry: String = ""
     @Binding var fatTotal: Double
+    @Binding var fatGoal: Double
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
         VStack(spacing: 10) {
-            Text("\(String(format: "%.0f", fatTotal)) / 70")
+            Text("\(String(format: "%3.0f", fatTotal)) / \(String(format: "%.0f", fatGoal))")
             TextField("Enter Fat", text: $currentEntry)
                 .font(.system(size: 15))
                 .keyboardType(.decimalPad)
@@ -131,6 +139,7 @@ struct FatEntryView: View {
             }
             .font(.system(size: 12))
             .frame(width: 100, height: 20)
+            .foregroundStyle(Color.red)
             .border(Color.red, width: 3)
         }
     }

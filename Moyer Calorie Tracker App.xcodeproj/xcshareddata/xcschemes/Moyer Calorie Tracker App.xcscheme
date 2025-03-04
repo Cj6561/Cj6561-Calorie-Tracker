@@ -11,7 +11,7 @@
             buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
@@ -24,12 +24,40 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <TestPlanReference
                reference = "container:Moyer Calorie Tracker App.xctestplan">
             </TestPlanReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D90DDF0C2D7155400052642D"
+               BuildableName = "Moyer Calorie Tracker AppTests.xctest"
+               BlueprintName = "Moyer Calorie Tracker AppTests"
+               ReferencedContainer = "container:Moyer Calorie Tracker App.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D90DDF162D7155400052642D"
+               BuildableName = "Moyer Calorie Tracker AppUITests.xctest"
+               BlueprintName = "Moyer Calorie Tracker AppUITests"
+               ReferencedContainer = "container:Moyer Calorie Tracker App.xcodeproj">
+            </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
@@ -44,30 +72,6 @@
             default = "YES">
          </TestPlanReference>
       </TestPlans>
-      <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D90DDF0C2D7155400052642D"
-               BuildableName = "Moyer Calorie Tracker AppTests.xctest"
-               BlueprintName = "Moyer Calorie Tracker AppTests"
-               ReferencedContainer = "container:Moyer Calorie Tracker App.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D90DDF162D7155400052642D"
-               BuildableName = "Moyer Calorie Tracker AppUITests.xctest"
-               BlueprintName = "Moyer Calorie Tracker AppUITests"
-               ReferencedContainer = "container:Moyer Calorie Tracker App.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -78,7 +82,9 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
+      allowLocationSimulation = "YES"
+      consoleMode = "0"
+      structuredConsoleMode = "1">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference

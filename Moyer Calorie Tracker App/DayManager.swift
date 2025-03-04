@@ -165,7 +165,8 @@ class DayManager: ObservableObject {
         breakfastValue: Double,
         lunchValue: Double,
         dinnerValue: Double,
-        snackValue: Double
+        snackValue: Double,
+        calorieValue: Double
     ) {
         guard days.indices.contains(currentIndex) else {
             print("❌ Error: Attempting to update a day that doesn't exist")
@@ -180,7 +181,8 @@ class DayManager: ObservableObject {
         days[currentIndex].lunchTotal = lunchValue
         days[currentIndex].dinnerTotal = dinnerValue
         days[currentIndex].snackTotal = snackValue
-        days[currentIndex].calorieTotal = totalConsumed(breakfastValue, lunchValue, dinnerValue, snackValue)
+        days[currentIndex].calorieTotal = calorieValue
+        
 
         print("🔥 Updated Day Before Saving: \(days[currentIndex])")
 

@@ -40,7 +40,10 @@ struct PartialDonutChart: View {
     let innerRatio: CGFloat
     let clockwise: Bool
     
-    let dailyGoal: Double
+    @Binding var dailyGoal: Double
+    
+    let exerciseTotal: Double
+    let exerciseBool: Bool
 
     var body: some View {
         GeometryReader { geo in
@@ -83,7 +86,7 @@ struct PartialDonutChart: View {
         )] = []
         
         let total = data.reduce(0) { $0 + $1.value }
-        let fillFactor = min(total, dailyGoal) / dailyGoal
+        let fillFactor = min(total, dailyGoal + exerciseTotal) / (dailyGoal + exerciseTotal)
         let maxArcDegrees = 360.0 * arcFraction
         let usedArcDegrees = maxArcDegrees * fillFactor
         
