@@ -15,11 +15,13 @@ struct settingsView: View {
     @Binding var dailyCarbs: Double
     @Binding var dailyProtein: Double
     @Binding var dailyFat: Double
+    @Binding var dailyWater: Double
     
     @State var dailyCaloriesStr: String = ""
     @State var dailyProteinStr: String = ""
     @State var dailyCarbsStr: String = ""
     @State var dailyFatsStr: String = ""
+    @State var dailyWaterStr: String = ""
     
     func onSubmit() {
         if let dailyCaloriesValue = Double(dailyCaloriesStr) {
@@ -33,6 +35,9 @@ struct settingsView: View {
         }
         if let dailyFatsValue = Double(dailyFatsStr) {
             dailyFat = dailyFatsValue
+        }
+        if let dailyWaterValue = Double(dailyWaterStr) {
+            dailyWater = dailyWaterValue
         }
         
         // Save the updated values
@@ -89,6 +94,17 @@ struct settingsView: View {
                     dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
                 }
                 dailyFatsStr = ""
+            }
+            TextField("Enter Water", text: $dailyWaterStr)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .keyboardType(.decimalPad)
+                .frame(width: 200)
+            Button("Submit") {
+                if let value = Double(dailyWaterStr) {
+                    dailyWater = value
+                    dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
+                }
+                dailyWaterStr = ""
             }
         }
     }

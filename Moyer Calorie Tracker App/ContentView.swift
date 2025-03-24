@@ -25,16 +25,18 @@ struct ContentView: View {
     @State private var totalCarb: Double = 0
     @State private var totalProtein: Double = 0
     @State private var totalFat: Double = 0
+    @State private var totalWater: Double = 0
     
     @State private var exerciseTotal: Double = 0
     @State private var consumed: Double = 0
 
-    @State private var baseDailyCalories: Double = 1885
-    @State private var baseDailyCarbs: Double = 200
+    @State private var baseDailyCalories: Double = 2600
+    @State private var baseDailyCarbs: Double = 250
     @State private var baseDailyProteins: Double = 200
-    @State private var baseDailyFats: Double = 70
+    @State private var baseDailyFats: Double = 85
+    @State private var baseDailyWater: Double = 6
     
-    @State private var samMode: Bool = false
+    @State private var samMode: Bool = true
     @State private var showingSheet = false
 
     func saveMacroData() {
@@ -49,7 +51,8 @@ struct ContentView: View {
             lunchValue: lunchValue,
             dinnerValue: dinnerValue,
             snackValue: snackValue,
-            calorieValue: consumed
+            calorieValue: consumed,
+            waterValue: totalWater
         )
         dayManager.saveDayData(dayToSave: currentDay)
     }
@@ -108,7 +111,18 @@ struct ContentView: View {
                     .frame(width: 40, height: 40)
             }
             Spacer()
-            Text("\(dayManager.formattedDate(for: dayManager.days.indices.contains(dayManager.currentIndex) ? dayManager.days[dayManager.currentIndex].date : Date()))")
+            Text(
+                dayManager.days.indices.contains(dayManager.currentIndex)
+                && dayManager.startOfDay(for: dayManager.days[dayManager.currentIndex].date)
+                   == dayManager.startOfDay(for: Date())
+                ? "Today"
+                : dayManager.formattedDate(
+                    for: dayManager.days.indices.contains(dayManager.currentIndex)
+                    ? dayManager.days[dayManager.currentIndex].date
+                    : Date()
+                  )
+            )
+
                 .font(.title)
                 .bold()
             Spacer()
@@ -128,7 +142,7 @@ struct ContentView: View {
                     .frame(width: 40, height: 40)
             }
             .sheet(isPresented: $showingSheet) {
-                settingsView(dayManager: dayManager, samMode: $samMode, dailyCalories: $baseDailyCalories, dailyCarbs: $baseDailyCarbs, dailyProtein: $baseDailyProteins, dailyFat: $baseDailyFats)
+                settingsView(dayManager: dayManager, samMode: $samMode, dailyCalories: $baseDailyCalories, dailyCarbs: $baseDailyCarbs, dailyProtein: $baseDailyProteins, dailyFat: $baseDailyFats, dailyWater: $baseDailyWater)
             }
             Spacer()
         }
@@ -173,8 +187,9 @@ struct ContentView: View {
             
             Text("SAM MODE ACTIVATED")
                 .font(.title)
+                .offset(y: 200)
             Text("Entering Calories by Macros Only")
-                .offset(y: 15)
+                .offset(y: 200)
         }
     }
 
@@ -281,6 +296,7 @@ struct ContentView: View {
                         self.totalProtein = day.proteinTotal
                         self.totalFat = day.fatTotal
                         self.exerciseTotal = day.exerciseTotal
+                        self.totalWater = day.waterTotal
                     }
                 }
             }
@@ -312,7 +328,14 @@ struct ContentView: View {
                 .offset(y: 10)
             } else {
                 samModeView
+                    .offset(y: -175)
             }
+            WaterView(waterValue: $totalWater, baseDailyWater: $baseDailyWater, dayManager: dayManager)
+                .onChange(of: totalWater) { _ in
+                    saveMacroData()
+                }
+
+                
             
         }
         // Also ignores safe area on the ZStack itself

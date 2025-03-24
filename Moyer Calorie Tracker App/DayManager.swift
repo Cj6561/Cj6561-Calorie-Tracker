@@ -80,7 +80,8 @@ class DayManager: ObservableObject {
             lunchTotal: 0,
             dinnerTotal: 0,
             snackTotal: 0,
-            exerciseTotal: 0
+            exerciseTotal: 0,
+            waterTotal: 0
         )
 
         days.append(newDay)
@@ -104,7 +105,8 @@ class DayManager: ObservableObject {
             "lunchTotal": dayToSave.lunchTotal,
             "dinnerTotal": dayToSave.dinnerTotal,
             "snackTotal": dayToSave.snackTotal,
-            "exerciseTotal": dayToSave.exerciseTotal
+            "exerciseTotal": dayToSave.exerciseTotal,
+            "waterTotal": dayToSave.waterTotal
         ]
 
         FirebaseHelper.shared.saveDayToFirestore(data: data, for: dayToSave.date)
@@ -166,7 +168,8 @@ class DayManager: ObservableObject {
         lunchValue: Double,
         dinnerValue: Double,
         snackValue: Double,
-        calorieValue: Double
+        calorieValue: Double,
+        waterValue: Double
     ) {
         guard days.indices.contains(currentIndex) else {
             print("❌ Error: Attempting to update a day that doesn't exist")
@@ -182,6 +185,7 @@ class DayManager: ObservableObject {
         days[currentIndex].dinnerTotal = dinnerValue
         days[currentIndex].snackTotal = snackValue
         days[currentIndex].calorieTotal = calorieValue
+        days[currentIndex].waterTotal = waterValue
         
 
         print("🔥 Updated Day Before Saving: \(days[currentIndex])")

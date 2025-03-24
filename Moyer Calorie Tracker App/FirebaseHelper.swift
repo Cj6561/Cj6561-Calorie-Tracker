@@ -55,7 +55,8 @@ class FirebaseHelper {
                     lunchTotal: data["lunchTotal"] as? Double ?? 0,
                     dinnerTotal: data["dinnerTotal"] as? Double ?? 0,
                     snackTotal: data["snackTotal"] as? Double ?? 0,
-                    exerciseTotal: data["exerciseTotal"] as? Double ?? 0
+                    exerciseTotal: data["exerciseTotal"] as? Double ?? 0,
+                    waterTotal: data["waterTotal"] as? Double ?? 0
                 )
                 print("✅ Firestore Data Loaded: \(day)")
                 completion(day)
