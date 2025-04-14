@@ -1,12 +1,4 @@
-//
-//  settingsView.swift
-//  Moyer Calorie Tracker App
-//
-//  Created by Christian Moyer on 3/4/25.
-//
-
 import SwiftUI
-
 
 struct settingsView: View {
     @ObservedObject var dayManager: DayManager
@@ -17,95 +9,63 @@ struct settingsView: View {
     @Binding var dailyFat: Double
     @Binding var dailyWater: Double
     
-    @State var dailyCaloriesStr: String = ""
-    @State var dailyProteinStr: String = ""
-    @State var dailyCarbsStr: String = ""
-    @State var dailyFatsStr: String = ""
-    @State var dailyWaterStr: String = ""
+    @State private var dailyCaloriesStr: String = ""
+    @State private var dailyProteinStr: String = ""
+    @State private var dailyCarbsStr: String = ""
+    @State private var dailyFatsStr: String = ""
+    @State private var dailyWaterStr: String = ""
     
     func onSubmit() {
-        if let dailyCaloriesValue = Double(dailyCaloriesStr) {
-            dailyCalories = dailyCaloriesValue
-        }
-        if let dailyProteinValue = Double(dailyProteinStr) {
-            dailyProtein = dailyProteinValue
-        }
-        if let dailyCarbsValue = Double(dailyCarbsStr) {
-            dailyCarbs = dailyCarbsValue
-        }
-        if let dailyFatsValue = Double(dailyFatsStr) {
-            dailyFat = dailyFatsValue
-        }
-        if let dailyWaterValue = Double(dailyWaterStr) {
-            dailyWater = dailyWaterValue
-        }
+        if let value = Double(dailyCaloriesStr) { dailyCalories = value }
+        if let value = Double(dailyProteinStr) { dailyProtein = value }
+        if let value = Double(dailyCarbsStr) { dailyCarbs = value }
+        if let value = Double(dailyFatsStr) { dailyFat = value }
+        if let value = Double(dailyWaterStr) { dailyWater = value }
         
-        // Save the updated values
+        let dailyVals = DailyValues(
+            proteinGoal: dailyProtein,
+            carbGoal: dailyCarbs,
+            fatGoal: dailyFat,
+            calorieGoal: dailyCalories,
+            waterGoal: dailyWater
+        )
+        
+        FirebaseHelper.shared.saveDailyGoalsToFirestore(values: dailyVals)
         dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
+        
+        clearFields()
+    }
+
+    func clearFields() {
+        dailyCaloriesStr = ""
+        dailyProteinStr = ""
+        dailyCarbsStr = ""
+        dailyFatsStr = ""
+        dailyWaterStr = ""
     }
 
     var body: some View {
-        VStack {
-            
+        VStack(spacing: 12) {
             Toggle(isOn: $samMode) {
                 Text("SAM mode")
-                    
-            }.frame(width: 200, height: 40)
-            TextField("Enter Daily Calories", text: $dailyCaloriesStr)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.decimalPad)
-                .frame(width: 200)
-            Button("Submit") {
-                if let value = Double(dailyCaloriesStr) {
-                    dailyCalories = value
-                    dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
-                }
-                dailyCaloriesStr = ""
             }
-            TextField("Enter Carbs", text: $dailyCarbsStr)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.decimalPad)
-                .frame(width: 200)
-            Button("Submit") {
-                if let value = Double(dailyCarbsStr) {
-                    dailyCarbs = value
-                    dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
-                }
-                dailyCarbsStr = ""
+            .frame(width: 200, height: 40)
+
+            Group {
+                TextField("Enter Daily Calories", text: $dailyCaloriesStr)
+                TextField("Enter Carbs", text: $dailyCarbsStr)
+                TextField("Enter Protein", text: $dailyProteinStr)
+                TextField("Enter Fat", text: $dailyFatsStr)
+                TextField("Enter Water", text: $dailyWaterStr)
             }
-            TextField("Enter Protein", text: $dailyProteinStr)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.decimalPad)
-                .frame(width: 200)
-            Button("Submit") {
-                if let value = Double(dailyProteinStr) {
-                    dailyProtein = value
-                    dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
-                }
-                dailyProteinStr = ""
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .keyboardType(.decimalPad)
+            .frame(width: 200)
+
+            Button("Submit All") {
+                onSubmit()
             }
-            TextField("Enter Fat", text: $dailyFatsStr)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.decimalPad)
-                .frame(width: 200)
-            Button("Submit") {
-                if let value = Double(dailyFatsStr) {
-                    dailyFat = value
-                    dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
-                }
-                dailyFatsStr = ""
-            }
-            TextField("Enter Water", text: $dailyWaterStr)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.decimalPad)
-                .frame(width: 200)
-            Button("Submit") {
-                if let value = Double(dailyWaterStr) {
-                    dailyWater = value
-                    dayManager.saveDayData(dayToSave: dayManager.days[dayManager.currentIndex])
-                }
-                dailyWaterStr = ""
-            }
+            .padding(.top)
         }
     }
 }

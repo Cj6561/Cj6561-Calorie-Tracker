@@ -5,6 +5,7 @@ import FirebaseFirestore
 import HealthKit
 import Combine
 
+
 extension View {
     func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
@@ -17,10 +18,10 @@ struct ContentView: View {
     @StateObject private var healthKitManager = HealthKitManager()
     @State private var timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
 
-    @State private var breakfastValue: Double = 0
-    @State private var lunchValue: Double = 0
-    @State private var dinnerValue: Double = 0
-    @State private var snackValue: Double = 0
+    @State private var totalBreakfast: Double = 0
+    @State private var totalLunch: Double = 0
+    @State private var totalDinner: Double = 0
+    @State private var totalSnack: Double = 0
     
     @State private var totalCarb: Double = 0
     @State private var totalProtein: Double = 0
@@ -29,15 +30,31 @@ struct ContentView: View {
     
     @State private var exerciseTotal: Double = 0
     @State private var consumed: Double = 0
-
-    @State private var baseDailyCalories: Double = 2600
-    @State private var baseDailyCarbs: Double = 250
-    @State private var baseDailyProteins: Double = 200
-    @State private var baseDailyFats: Double = 85
+    @State private var baseDailyCalories: Double = 0
+    @State private var baseDailyCarbs: Double = 0
+    @State private var baseDailyProteins: Double = 0
+    @State private var baseDailyFats: Double = 0
     @State private var baseDailyWater: Double = 6
     
-    @State private var samMode: Bool = true
+    @State private var samMode: Bool = false
     @State private var showingSheet = false
+    
+    func loadDailys() {
+        FirebaseHelper.shared.loadDailyValuesFromFirestore { dayVals in
+            guard let vals = dayVals else {
+                print("⚠️ No daily values loaded")
+                return
+            }
+
+            baseDailyCalories = vals.calorieGoal
+            baseDailyFats = vals.fatGoal
+            baseDailyCarbs = vals.carbGoal
+            baseDailyProteins = vals.proteinGoal
+            baseDailyWater = vals.waterGoal
+            print("✅ Loaded daily values from Firestore")
+        }
+    }
+
 
     func saveMacroData() {
         guard dayManager.days.indices.contains(dayManager.currentIndex) else { return }
@@ -47,10 +64,10 @@ struct ContentView: View {
             totalCarb: totalCarb,
             totalProtein: totalProtein,
             totalFat: totalFat,
-            breakfastValue: breakfastValue,
-            lunchValue: lunchValue,
-            dinnerValue: dinnerValue,
-            snackValue: snackValue,
+            breakfastValue: totalBreakfast,
+            lunchValue: totalLunch,
+            dinnerValue: totalDinner,
+            snackValue: totalSnack,
             calorieValue: consumed,
             waterValue: totalWater
         )
@@ -64,13 +81,14 @@ struct ContentView: View {
                 self.exerciseTotal = kcals ?? 0
             }
         }
+        fetchConsumedForToday()
     }
 
     func fetchConsumedForToday() {
         if samMode {
             consumed = (4 * totalCarb) + (4 * totalProtein) + (9 * totalFat)
         } else {
-            consumed = breakfastValue + lunchValue + dinnerValue + snackValue
+            consumed = totalBreakfast + totalLunch + totalDinner + totalSnack
         }
     }
 
@@ -164,8 +182,13 @@ struct ContentView: View {
                 .offset(y: -15)
             CalorieBurnedView(dayManager: dayManager, caloriesBurned: exerciseTotal, timer: timer)
                 .offset(y: 25)
-                .onAppear { fetchCaloriesForSelectedDay() }
-                .onReceive(timer) { _ in fetchCaloriesForSelectedDay() }
+                .onAppear {
+                    loadDailys()
+                    fetchCaloriesForSelectedDay()
+                }
+                .onReceive(timer) { _ in fetchCaloriesForSelectedDay()
+                    loadDailys()
+                }
         }
     }
 
@@ -204,10 +227,10 @@ struct ContentView: View {
                     if !samMode {
                         PartialDonutChart(
                             data: [
-                                (label: "Breakfast", value: breakfastValue),
-                                (label: "Lunch", value: lunchValue),
-                                (label: "Dinner", value: dinnerValue),
-                                (label: "Snacks", value: snackValue)
+                                (label: "Breakfast", value: totalBreakfast),
+                                (label: "Lunch", value: totalLunch),
+                                (label: "Dinner", value: totalDinner),
+                                (label: "Snacks", value: totalSnack)
                             ],
                             colors: [.blue, .red, .green, .orange],
                             arcFraction: 0.70,
@@ -233,7 +256,7 @@ struct ContentView: View {
                         PartialDonutChart(
                             data: [
                                 (label: "carb", value: totalCarb * 4),
-                                (label: "protien", value: totalProtein * 4),
+                                (label: "protein", value: totalProtein * 4),
                                 (label: "fat", value: totalFat * 9),
                             ],
                             colors: [.blue, .green, .red],
@@ -274,50 +297,57 @@ struct ContentView: View {
                         .onChange(of: totalFat) { _ in saveMacroData() }
                         .offset(y: -5)
                         MealTotals(
-                            breakfastTotal: $breakfastValue,
-                            lunchTotal: $lunchValue,
-                            dinnerTotal: $dinnerValue,
-                            snackTotal: $snackValue
+                            breakfastTotal: $totalBreakfast,
+                            lunchTotal: $totalLunch,
+                            dinnerTotal: $totalDinner,
+                            snackTotal: $totalSnack
                         )
                     }
                 }
             }
             .onAppear {
+                fetchConsumedForToday()
+                loadDailys()
                 dayManager.loadDayData() // Ensure Firebase data loads on app launch
             }
             .onReceive(NotificationCenter.default.publisher(for: .didUpdateDay)) { notification in
                 if let userInfo = notification.userInfo, let day = userInfo["day"] as? Day {
                     DispatchQueue.main.async {
-                        self.breakfastValue = day.breakfastTotal
-                        self.lunchValue = day.lunchTotal
-                        self.dinnerValue = day.dinnerTotal
-                        self.snackValue = day.snackTotal
+                        self.totalBreakfast = day.breakfastTotal
+                        self.totalLunch = day.lunchTotal
+                        self.totalDinner = day.dinnerTotal
+                        self.totalSnack = day.snackTotal
                         self.totalCarb = day.carbTotal
                         self.totalProtein = day.proteinTotal
                         self.totalFat = day.fatTotal
                         self.exerciseTotal = day.exerciseTotal
                         self.totalWater = day.waterTotal
                     }
+                    loadDailys()
                 }
             }
             .onReceive(dayManager.$burnedCalories) { newBurned in
                 self.exerciseTotal = newBurned
                 fetchConsumedForToday()
                 fetchCaloriesForSelectedDay()
+                loadDailys()
+                
             }
             .onDisappear {
+                fetchConsumedForToday()
                 guard dayManager.days.indices.contains(dayManager.currentIndex) else { return }
                 let currentDay = dayManager.days[dayManager.currentIndex]
                 dayManager.saveDayData(dayToSave: currentDay)
+                loadDailys()
             }
 
             if !samMode {
                 MealEntriesView(
                     dayManager: dayManager,
-                    breakfastValue: $breakfastValue,
-                    lunchValue: $lunchValue,
-                    dinnerValue: $dinnerValue,
-                    snackValue: $snackValue,
+                    breakfastValue: $totalBreakfast,
+                    lunchValue: $totalLunch,
+                    dinnerValue: $totalDinner,
+                    snackValue: $totalSnack,
                     isToday: dayManager.isToday,
                     updateCurrentDay: {
                         saveMacroData()
@@ -332,11 +362,10 @@ struct ContentView: View {
             }
             WaterView(waterValue: $totalWater, baseDailyWater: $baseDailyWater, dayManager: dayManager)
                 .onChange(of: totalWater) { _ in
+                    fetchConsumedForToday()
                     saveMacroData()
+                    loadDailys()
                 }
-
-                
-            
         }
         // Also ignores safe area on the ZStack itself
         .ignoresSafeArea(.keyboard, edges: .bottom)
@@ -352,7 +381,8 @@ struct ContentView: View {
             }
             
         }.onChange(of: samMode) { _ in
-            fetchConsumedForToday() // 🔹 Update calories when toggling Sam Mode
+            fetchConsumedForToday()
+            loadDailys()// 🔹 Update calories when toggling Sam Mode
         }
     }
        

@@ -31,6 +31,7 @@
 		D9B7B6B22D72BC190095997B /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = D9B7B6B12D72BC190095997B /* FirebaseCore */; };
 		D9B7B6B42D72BC190095997B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D9B7B6B32D72BC190095997B /* FirebaseFirestore */; };
 		D9B7B6B62D72BC630095997B /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B7B6B52D72BC630095997B /* FirebaseHelper.swift */; };
+		D9E8A9442DAD9E83003A78E2 /* dailyValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E8A9432DAD9E72003A78E2 /* dailyValues.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 		D97652392D723D8100F39DAA /* macroFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macroFields.swift; sourceTree = "<group>"; };
 		D9AF95072D90EA5D0020D3A3 /* WaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterView.swift; sourceTree = "<group>"; };
 		D9B7B6B52D72BC630095997B /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
+		D9E8A9432DAD9E72003A78E2 /* dailyValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dailyValues.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 				D914C61C2D7788D900CD5384 /* settingsView.swift */,
 				D969E2012D764A83006FAB17 /* MealTotals.swift */,
 				D9696C872D72C726005A0C00 /* Day.swift */,
+				D9E8A9432DAD9E72003A78E2 /* dailyValues.swift */,
 				D9696C852D72C5C5005A0C00 /* DayManager.swift */,
 				D9696C832D72C55E005A0C00 /* MealEntriesView.swift */,
 				D9B7B6B52D72BC630095997B /* FirebaseHelper.swift */,
@@ -316,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9E8A9442DAD9E83003A78E2 /* dailyValues.swift in Sources */,
 				D9696C862D72C5C5005A0C00 /* DayManager.swift in Sources */,
 				D90DDF032D71553F0052642D /* ContentView.swift in Sources */,
 				D9391BD42D723031004ACC09 /* Macros.swift in Sources */,

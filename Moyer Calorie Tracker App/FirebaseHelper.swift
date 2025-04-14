@@ -1,7 +1,7 @@
 import Firebase
 import FirebaseFirestore
 
-class FirebaseHelper {
+class FirebaseHelper: ObservableObject {
     static let shared = FirebaseHelper()
     private let db = Firestore.firestore()
     
@@ -18,6 +18,44 @@ class FirebaseHelper {
             }
         }
     }
+    func saveDailyGoalsToFirestore(protein: Int, carbs: Int, fats: Int, calories: Int) {
+        let key = "1";
+        let data = ["calories": calories,
+                    "fat": fats,
+                    "carbs": carbs,
+                    "protein": protein]
+        
+        print ("Saveing daily values to Firestore")
+        db.collection("Dailys").document(key).setData(data) { error in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            else{
+                print("Daily vlues saved successfully")
+            }
+        }
+    }
+    func saveDailyGoalsToFirestore(values: DailyValues) {
+        let key = "1";
+        let data: [String: Any] = [
+                "proteinGoal": values.proteinGoal,
+                "carbGoal": values.carbGoal,
+                "fatGoal": values.fatGoal,
+                "calorieGoal": values.calorieGoal,
+                "waterGoal": values.waterGoal
+            ]
+        
+        print ("Saveing daily values to Firestore")
+        db.collection("Dailys").document(key).setData(data) { error in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            else{
+                print("Daily vlues saved successfully")
+            }
+        }
+    }
+        
 
     private func formattedDateKey(from date: Date) -> String {
         let formatter = DateFormatter()
@@ -42,7 +80,6 @@ class FirebaseHelper {
     }
     func loadDayFromFirestore(for date: Date, completion: @escaping (Day?) -> Void) {
         let dateKey = formattedDateKey(from: date)
-        
         db.collection("days").document(dateKey).getDocument { document, error in
             if let document = document, document.exists, let data = document.data() {
                 let day = Day(
@@ -66,4 +103,23 @@ class FirebaseHelper {
             }
         }
     }
+    func loadDailyValuesFromFirestore(completion: @escaping (DailyValues?) -> Void) {
+        let key = "1"
+        db.collection("Dailys").document(key).getDocument(completion:{ document, error in
+            if let document = document, document.exists, let data = document.data() {
+                let dailys = DailyValues(
+                    proteinGoal: data["proteinGoal"] as? Double ?? 0,
+                    carbGoal: data["carbGoal"] as? Double ?? 0,
+                    fatGoal: data["fatGoal"] as? Double ?? 0,
+                    calorieGoal: data["calorieGoal"] as? Double ?? 0,
+                    waterGoal: data["waterGoal"] as? Double ?? 0
+                )
+                completion(dailys)
+            } else {
+                print("Document does not exist")
+                completion(nil)
+            }
+        })
+    }
+
 }
