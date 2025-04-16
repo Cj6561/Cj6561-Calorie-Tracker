@@ -4,13 +4,20 @@ import FirebaseFirestore
 class FirebaseHelper: ObservableObject {
     static let shared = FirebaseHelper()
     private let db = Firestore.firestore()
+	
     
     func saveDayToFirestore(data: [String: Any], for date: Date) {
+		guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+			  print("❌ no userID set")
+			  return
+		}
+		
+		
         let dateKey = formattedDateKey(from: date)
 
         print("🔥 Saving to Firestore: \(data)")  // ✅ Debugging Log
 
-        db.collection("days").document(dateKey).setData(data) { error in
+        db.collection(userID).document(dateKey).setData(data) { error in
             if let error = error {
                 print("❌ Error saving day: \(error.localizedDescription)")
             } else {
@@ -19,7 +26,11 @@ class FirebaseHelper: ObservableObject {
         }
     }
     func saveDailyGoalsToFirestore(protein: Int, carbs: Int, fats: Int, calories: Int) {
-        let key = "1";
+		guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+			  print("❌ no userID set")
+			  return
+		}
+        let key = userID
         let data = ["calories": calories,
                     "fat": fats,
                     "carbs": carbs,
@@ -36,7 +47,11 @@ class FirebaseHelper: ObservableObject {
         }
     }
     func saveDailyGoalsToFirestore(values: DailyValues) {
-        let key = "1";
+		guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+			  print("❌ no userID set")
+			  return
+		}
+		let key = userID;
         let data: [String: Any] = [
                 "proteinGoal": values.proteinGoal,
                 "carbGoal": values.carbGoal,
@@ -63,8 +78,12 @@ class FirebaseHelper: ObservableObject {
         return formatter.string(from: date)
     }
     func loadAllDaysFromFirestore(completion: @escaping ([Day]) -> Void) {
+		guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+			  print("❌ no userID set")
+			  return
+		}
         let db = Firestore.firestore()
-        db.collection("days").getDocuments { snapshot, error in
+        db.collection(userID).getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error loading days: \(error.localizedDescription)")
                 completion([])
@@ -79,8 +98,12 @@ class FirebaseHelper: ObservableObject {
         }
     }
     func loadDayFromFirestore(for date: Date, completion: @escaping (Day?) -> Void) {
+		guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+			  print("❌ no userID set")
+			  return
+		}
         let dateKey = formattedDateKey(from: date)
-        db.collection("days").document(dateKey).getDocument { document, error in
+        db.collection(userID).document(dateKey).getDocument { document, error in
             if let document = document, document.exists, let data = document.data() {
                 let day = Day(
                     date: date,
@@ -104,7 +127,11 @@ class FirebaseHelper: ObservableObject {
         }
     }
     func loadDailyValuesFromFirestore(completion: @escaping (DailyValues?) -> Void) {
-        let key = "1"
+		guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+			  print("❌ no userID set")
+			  return
+		}
+        let key = userID
         db.collection("Dailys").document(key).getDocument(completion:{ document, error in
             if let document = document, document.exists, let data = document.data() {
                 let dailys = DailyValues(

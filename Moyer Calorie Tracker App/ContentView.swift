@@ -14,7 +14,7 @@ extension View {
 }
 
 struct ContentView: View {
-    @StateObject private var dayManager = DayManager()
+	@StateObject private var dayManager = DayManager()
     @StateObject private var healthKitManager = HealthKitManager()
     @State private var timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
 
@@ -40,6 +40,11 @@ struct ContentView: View {
     @State private var showingSheet = false
     
     func loadDailys() {
+		guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+			  print("❌ no userID set")
+			  return
+		}
+		print(userID)
         FirebaseHelper.shared.loadDailyValuesFromFirestore { dayVals in
             guard let vals = dayVals else {
                 print("⚠️ No daily values loaded")

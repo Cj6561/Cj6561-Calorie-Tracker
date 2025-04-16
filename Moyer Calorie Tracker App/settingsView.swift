@@ -1,5 +1,9 @@
 import SwiftUI
 
+
+
+
+
 struct settingsView: View {
     @ObservedObject var dayManager: DayManager
     @Binding var samMode: Bool
